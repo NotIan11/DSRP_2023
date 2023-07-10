@@ -1,4 +1,4 @@
-My dataset is about student performance in school examinations across different subjects, with respect to student gender, race, parental education, attendance of test prep courses, and lunch status.
+My data set is about student performance in school examinations across different subjects, with respect to student gender, race, parental education, attendance of test prep courses, and lunch status.
 
 <https://www.kaggle.com/datasets/spscientist/students-performance-in-exams>
 
