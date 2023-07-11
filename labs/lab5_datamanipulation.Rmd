@@ -1,0 +1,96 @@
+```{r setup}
+library(dplyr)
+```
+
+## Filtering
+
+Filtering student performance based on lunch status
+
+```{r}
+filter(studentdata, lunch == "standard")
+filter(studentdata, lunch == "free/reduced")
+```
+
+Filtering student performance based on parental education level
+
+```{r}
+parent <- studentdata$parental.level.of.education
+filter(studentdata, parent == "some high school")
+filter(studentdata, parent == "some college")
+filter(studentdata, parent == "associate's degree")
+filter(studentdata, parent == "bachelor's degree")
+filter(studentdata, parent == "master's degree")
+```
+
+## Selecting (Creating smaller data sets)
+
+Data set only including parental education level and student performance metrics
+
+```{r}
+select(studentdata, parental.level.of.education, math.score, reading.score, writing.score)
+```
+
+Data set only including race/ethnicity and student performance metrics
+
+```{r}
+select(studentdata, race.ethnicity, math.score, reading.score, writing.score)
+```
+
+Data set only including test prep status and student performance metrics
+
+```{r}
+select(studentdata, test.preparation.course, math.score, reading.score, writing.score)
+```
+
+## Mutating
+
+Data set including student performance metrics and their means
+
+```{r}
+metrics <- select(studentdata, math.score, reading.score, writing.score)
+
+mutate(metrics, 
+       math_mean = mean(math.score, na.rm=T),
+       reading_mean = mean(reading.score, na.rm=T),
+       writing_mean = mean(writing.score, na.rm=T))
+```
+
+## Summaries
+
+Summarizing metrics by parental level of education
+
+```{r}
+summarize(studentdata, 
+          mean_math = mean(math.score, na.rm=T),
+          mean_reading = mean(reading.score, na.rm=T),
+          mean_writing = mean(writing.score, na.rm=T),
+          .by = parental.level.of.education)
+```
+
+## Arranging
+
+Arranging math scores from lowest to highest
+
+```{r}
+arrange(studentdata, math.score)
+```
+
+Arranging math scores from highest to lowest
+
+```{r}
+arrange(studentdata, desc(math.score))
+```
+
+## Creating a new visualization
+
+Scatter Plot describing math scores with respect to test prep course status
+
+```{r}
+library(ggplot2)
+
+ggplot(data=studentdata, aes(x=test.preparation.course, y=math.score))+
+       geom_jitter(aes(color = test.preparation.course), width=0.25)+
+  labs(title = "Math Scores with Respect to Test Preparation Course Status",
+       x="Test Preparation Course Status",
+       y= "Math Score")
+```
