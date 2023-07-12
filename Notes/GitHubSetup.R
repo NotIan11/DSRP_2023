@@ -6,5 +6,7 @@ usethis::use_git_config(user.name = "Ian Kim",
 usethis::create_github_token()
 
 ## set personal access token
-credentials::set_github_pat("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")
+#credentials::set_github_pat("")
 
+library(usethis)
+library(credentials)
