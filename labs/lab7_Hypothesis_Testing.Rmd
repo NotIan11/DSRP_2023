@@ -1,0 +1,48 @@
+## Lab 7: Hypothesis Testing 
+
+#### Load required packages
+
+```{r setup}
+library(dplyr)
+library(tidyr)
+library(janitor)
+```
+
+#### Read in data set
+
+```{r}
+read.csv("DSRP2023/Data/StudentsPerformance.csv")
+
+studentdata <- read.csv("DSRP2023/Data/StudentsPerformance.csv")
+```
+
+#### Establish variables and hypotheses
+
+Categorical Variables: Parental level of education (master's degree, some high school)
+
+Numerical Variable: math score
+
+**Null hypothesis**: The average math score of students whose parents have a master's degree is equal to the average math score of students whose parents have only completed up to some high school.
+
+**Alternate hypothesis**: The average math score of students whose parents have a master's degree is different from the average math score of students whose parents have only completed up to some high school.
+
+This test will be an unpaired, two-sided T-test.
+
+#### Create new, sub-datasets
+
+```{r}
+MastersMath <- studentdata |> filter (parental.level.of.education == "master's degree")|>
+  select(parental.level.of.education, math.score)
+
+SomeHSMath <- studentdata |> filter (parental.level.of.education == "some high school") |>
+  select (parental.level.of.education, math.score)
+
+```
+
+#### Run hypothesis test
+
+```{r}
+t.test(MastersMath$math.score, SomeHSMath$math.score, paired = F, alternative = "two.sided")
+```
+
+The p-value is 0.007839, which is lower than the established level of significance (0.05). There is significant statistical evidence to suggest that there is a difference between the mean math score of students whose parents have a master's degree and the mean math score of students whose parents have only completed up to some high school.
