@@ -1,4 +1,10 @@
-## Lab 7: Hypothesis Testing 
+---
+---
+---
+
+# Lab 7: Hypothesis Testing
+
+## Part One
 
 #### Load required packages
 
@@ -6,14 +12,13 @@
 library(dplyr)
 library(tidyr)
 library(janitor)
+library(corrplot)
 ```
 
 #### Read in data set
 
 ```{r}
-read.csv("DSRP2023/Data/StudentsPerformance.csv")
-
-studentdata <- read.csv("DSRP2023/Data/StudentsPerformance.csv")
+studentdata <- read.csv("../Data/StudentsPerformance.csv")
 ```
 
 #### Establish variables and hypotheses
@@ -46,3 +51,57 @@ t.test(MastersMath$math.score, SomeHSMath$math.score, paired = F, alternative = 
 ```
 
 The p-value is 0.007839, which is lower than the established level of significance (0.05). There is significant statistical evidence to suggest that there is a difference between the mean math score of students whose parents have a master's degree and the mean math score of students whose parents have only completed up to some high school.
+
+## Part Two
+
+#### Establish Variables and Hypotheses
+
+Categorical Variable: Parental Level of Education (some high school, some college, associate's degree, bachelor's degree, master's degree)
+
+Numeric: Writing score
+
+**Null hypothesis**: The average writing score of students is equal across all levels of parental education.
+
+**Alternate hypothesis**: The average writing score of students differs between levels of parental education.
+
+#### Conduct ANOVA Test
+
+```{r}
+anova_result <- aov(data = studentdata, writing.score ~ parental.level.of.education)
+
+summary(anova_result)
+
+TukeyHSD(anova_result)
+```
+
+The p-value of the ANOVA test is 1.12\*10\^-13, which is significantly lower than the level of significance (0.05). There is sufficient evidence to suggest that the average student writing score differs between levels of parental education.
+
+## Part Three
+
+#### Establish Variables and Hypotheses
+
+Categorical Variables: Parental level of education, Race/ethnicity group
+
+**Null hypothesis**: There is no relationship between a student's parental level of education and their race/ethnicity.
+
+**Alternative hypothesis**: There is a relationship between a student's parental level of education and their race/ethnicity.
+
+#### Contingency Table
+
+```{r}
+table <- table(studentdata$parental.level.of.education, studentdata$race.ethnicity)
+```
+
+#### Conduct Chi-Squared Test for Association
+
+```{r}
+chisq_result <- chisq.test(table)
+
+chisq_result$p.value
+
+chisq_result$residuals
+
+corrplot(chisq_result$residuals, is.cor=F)
+```
+
+The p-value from this test is 0.07911, which is greater than the level of significance (0.05). There isn't sufficient statistical evidence to suggest that there is an association between a student's parental level of education and their race/ethnicity.
